@@ -1,5 +1,6 @@
 # sql返回字典类型
 import datetime
+import re
 import hashlib
 
 from tornado.web import authenticated
@@ -33,12 +34,22 @@ class HeatHandler(BaseHandler):
             self.write_error(404)
 
     async def post(self):
-        group_id = self.get_argument('group_id') or '187861757'
-        year, week, day = datetime.datetime.now().isocalendar()
-        startpoint = datetime.datetime.now() - datetime.timedelta(day + 6)
-        endpoint = datetime.datetime.now() - datetime.timedelta(day - 1)
+        _year, _week, _day = datetime.datetime.now().isocalendar()
+        startpoint = datetime.datetime.now() - datetime.timedelta(_day + 6)
+        endpoint = datetime.datetime.now() - datetime.timedelta(_day - 1)
         stamp_st = datetime.datetime(startpoint.year, startpoint.month, startpoint.day)
         stamp_end = datetime.datetime(endpoint.year, endpoint.month, endpoint.day)
+
+        group_id = self.get_argument('group_id','187861757')
+        year = self.get_argument('year',"")
+        week = self.get_argument('week',"")
+        print(year,week)
+        if week != "选择周数" and year != "选择年份" and week != "" and year !="":
+            nums = re.findall('\d+', week)
+            stamp_st = datetime.datetime(int(year[:4]), int(nums[1]), int(nums[2]))
+            stamp_end = datetime.datetime(int(year[:4]), int(nums[3]), int(nums[4]))
+
+
         title = f'一周发言热力图{stamp_st}～{stamp_end}'
         data, content_list = await logic.heat_chart_handle(group_id, stamp_st, stamp_end)
         resp = {

@@ -1,4 +1,5 @@
 $(function () {
+
     window.onload = function () {
         $.ajax({
             url: "heat",
@@ -42,6 +43,8 @@ $(function () {
     });
 
 
+
+
     function set_echarts(resp) {
         var myChart = echarts.init(document.getElementById('main'));
         var hours = ['0', '1', '2', '3', '4', '5', '6',
@@ -57,57 +60,93 @@ $(function () {
         });
 
         option = {
-            title: {
-                text: resp.title,
-                left: 'center',
-                top: '3%'
-            },
-            tooltip: {
-                position: 'top'
-            },
-            animation: false,
-            grid: {
-                height: '50%',
-                top: '10%'
-            },
-            xAxis: {
-                type: 'category',
-                data: hours,
-                splitArea: {
-                    show: true
-                }
-            },
-            yAxis: {
-                type: 'category',
-                data: days,
-                splitArea: {
-                    show: true
-                }
-            },
-            visualMap: {
-                min: 0,
-                max: 300,
-                calculable: true,
-                orient: 'horizontal',
-                left: 'center',
-                bottom: '25%'
-            },
-            series: [{
-                name: '发言数量',
-                type: 'heatmap',
-                data: data,
-                label: {
-                    show: true
+            baseOption: { // 这里是基本的『原子option』。
+                title: {
+                    text: resp.title,
+                    left: 'center',
+                    top: '3%'
                 },
-                emphasis: {
-                    itemStyle: {
-                        shadowBlur: 10,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                tooltip: {
+                    position: 'top'
+                },
+                animation: false,
+                grid: {
+                    height: '50%',
+                    top: '10%'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: hours,
+                    splitArea: {
+                        show: true
                     }
-                }
-            }]
+                },
+                yAxis: {
+                    type: 'category',
+                    data: days,
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: 300,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '25%'
+                },
+                series: [{
+                    name: '发言数量',
+                    type: 'heatmap',
+                    data: data,
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            },
+
+            media: [ // 这里定义了 media query 的逐条规则。
+                {
+                    query: {maxWidth: 500},   // 这里写规则。
+                    option: {       // 这里写此规则满足下的option。
+                        grid: {
+                            height: '35%',
+                            top: '10%'
+                        },
+                        visualMap: {
+                            min: 0,
+                            max: 300,
+                            calculable: true,
+                            orient: 'horizontal',
+                            left: 'center',
+                            bottom: '45%'
+                        },
+                    }
+                },
+                // {
+                //     query: {...},   // 第二个规则。
+                //     option: {       // 第二个规则对应的option。
+                //         legend: {...},
+                //         ...
+                //     }
+                // },
+                // {                   // 这条里没有写规则，表示『默认』，
+                //     option: {       // 即所有规则都不满足时，采纳这个option。
+                //         legend: {...},
+                //         ...
+                //     }
+                // }
+            ]
         };
         myChart.setOption(option);
+        window.onresize = myChart.resize;
     }
 
 

@@ -47,7 +47,8 @@ $(function () {
             title: {
                 text: '信息分类',
                 subtext: '一条信息可能有多个图片，@等',
-                left: 'center'
+                left: 'center',
+
             },
             tooltip: {
                 trigger: 'axis',
@@ -55,10 +56,11 @@ $(function () {
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
-            legend: {
-                data: ['表情', '@', '图片', '语音', '文字'],
-                right:'10%'
-            },
+            // legend: {
+            //     data: ['表情', '@', '图片', '语音', '文字'],
+            //     right:'110%',
+            //     top:'70%'
+            // },
             grid: {
                 left: '3%',
                 right: '4%',
@@ -126,6 +128,7 @@ $(function () {
             ]
         };
         myChart.setOption(option);
+        window.onresize = myChart.resize;
     }
 
     function order_bar(resp) {
@@ -136,6 +139,7 @@ $(function () {
                 text: '信息数量排名',
                 subtext: '按照发送条数统计',
                 left: 'center',
+                // top:10
 
             },
             tooltip: {
@@ -178,6 +182,7 @@ $(function () {
         };
 
         myChart.setOption(option);
+        window.onresize = myChart.resize;
     }
 
 

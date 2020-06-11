@@ -5,6 +5,7 @@ if platform.system() == "Windows":
 
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
+import tornado.options
 import tornado.ioloop
 import tornado.web
 from tornado.web import url
@@ -40,6 +41,7 @@ def make_app():
         #     r"/(.*)", StaticFileHandler,
         #     {"path": os.path.join(Base_Dir, "static/html"), "default_filename": "hotmap.html"})
     ],
+        autoreload=True,
         # mysql=tornado.ioloop.IOLoop.current().run_sync(connect_aiomysql),
         # mysql=loop.run_until_complete(connect_aiomysql()),
         **APP_CONFIG
@@ -50,6 +52,9 @@ def make_app():
 # asyncio.new_event_loop().run_until_complete()
 
 if __name__ == "__main__":
+    tornado.options.parse_command_line()
     app = make_app()
+    app.debug = True
+
     app.listen(80)
     tornado.ioloop.IOLoop.current().start()
