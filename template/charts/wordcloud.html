@@ -1,0 +1,28 @@
+{% extends base.html %}
+{% block title %}
+词云
+{% end %}
+
+{% block main %}
+<div class="container">
+    <p class="summary"></p>
+    <span><strong>群号码</strong></span>
+    <label>
+        <select>
+            {% for group in group_id %}
+            <option value={{group}}>{{group}}</option>
+            {% end %}
+        </select>
+    </label>
+
+    <div id="main"></div>
+
+</div> <!-- /container -->
+{% end %}
+{% block script %}
+<script src="{{ static_url('utils/echarts-wordcloud.js') }}"></script>
+<script src="{{ static_url('js/charts/wordcloud.js') }}"></script>
+
+{% end %}
+
+
