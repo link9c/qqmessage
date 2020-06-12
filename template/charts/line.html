@@ -13,20 +13,24 @@
 
 {% block main %}
 <div class="container" style="width: 100%;height:1000px;">
-    <p class="summary"></p>
-    <span><strong>群号码</strong></span>
-    <label>
-        <select>
-
-            {% for group in group_id %}
-            <option value={{ group }}>{{ group }}</option>
-            {% end %}
-        </select>
-    </label>
+	<div id="top" style="margin-left: 85px;">
+		<p class="summary"></p>
+		<span class="my my1 btn btn-primary dropdown-toggle ft18">群号码</span>
+		<label>
+		    <select class="my my1 btn btn-primary dropdown-toggle ft18">
+		
+		        {% for group in group_id %}
+		        <option value={{ group }}>{{ group }}</option>
+		        {% end %}
+		    </select>
+		</label>
+		
+	</div>
+    
     <br>
 
 
-    <div id="line_bar" style="width: 100%;height:60%;"></div>
+    <div id="line_bar" style="width: 100%;height:50%;"></div>
 
 
 </div>

@@ -13,36 +13,37 @@
 
 {% block main %}
 <div class="container" style="width: 100%;height:768px;">
-    <p class="summary">QQ群一周发言热力图：每一格表示当前周的某一天的某一个小时的所有人发送信息数量。</p>
-    <span class="my my1 btn btn-primary dropdown-toggle ft18">群号码</span>
+	<div id="top" style="margin-left: 85px;">
+		<p class="summary">QQ群一周发言热力图：每一格表示当前周的某一天的某一个小时的所有人发送信息数量。</p>
+		<span class="my my1 btn btn-primary dropdown-toggle ft18">群号码</span>
+		
+		<label >
+		    <select class="my my1 btn btn-primary dropdown-toggle ft18" id="group">
+		
+		        {% for group in group_id %}
+		        <option value={{ group }}>{{ group }}</option>
+		        {% end %}
+		    </select>
+		</label>
+		<label >
+		    <select class="my my1 btn btn-primary dropdown-toggle ft18" id="year">
+		
+		        {% for year in years %}
+		        <option value={{ year }}>{{ year }}</option>
+		        {% end %}
+		    </select>
+		</label>
+		<label >
+		    <select class="my my1 btn btn-primary dropdown-toggle ft18" id="week">
+		
+		        {% for week in weeks %}
+		        <option value={{ week }}>{{ week }}</option>
+		        {% end %}
+		    </select>
+		</label>
+	</div>
+    
 
-    <label >
-        <select class="my my1 btn btn-primary dropdown-toggle ft18">
-
-            {% for group in group_id %}
-            <option value={{ group }}>{{ group }}</option>
-            {% end %}
-        </select>
-    </label>
-    <div class="btn-group">
-        <button type="button" class="my my1 btn btn-primary dropdown-toggle ft18" data-toggle="dropdown"
-                style="width: 120px;">
-            <span></span>  
-            <span class="yearText priceData">选择年份</span>  
-        </button>
-        <ul class="my line20 dropdown-menu ft16" role="menu" id="priceDataYear">
-        </ul>
-    </div>
-    <div class="btn-group">
-        <button type="button" class="my my1 btn btn-primary dropdown-toggle ft18" data-toggle="dropdown"
-                style="width: 250px;">
-            <span></span>  
-            <span class="weekText priceData">选择周数</span>  
-            <span class="caret"></span>
-        </button>
-        <ul class="my line20 dropdown-menu ft16" role="menu" id="priceDataWeek">
-        </ul>
-    </div>
 
     <div id="main" style="width: 100%;height:85%;"></div>
 </div>
@@ -52,107 +53,8 @@
 
 
 {% block script %}
-<script type="text/javascript">
-    $(function(){
-        showYear();
-    });
-//    显示近5年
-    function showYear() {
-    var nowDate = new Date();
-    //设置近5年的年份
-    var nowYear = nowDate.getFullYear();
-    var yearHtml = '<li><a href="javaScript:void(0)" onclick="year($(this).text())">选择年份</a></li>';
-    for (var i = 0; i < 5; i++) {
-        yearHtml += '<li><a href="javaScript:void(0)" onclick="year($(this).text())">' + (nowYear - i) + '年</a></li>';
-    }
-    $('#priceDataYear').html(yearHtml);
-    }
 
-    function year(text) {
-        $('.yearText.priceData').text(text);
-        $('.weekText').text('选择周数');
-        var weekHtml = '';
-        if(text != '选择年份') {
-            var year = parseInt(text.substring(0, text.length - 1));
-            //计算出这年的周数
-            var weekNum = getNumOfWeeks(year);
-            //首先算出这年的第一个星期日
-            var firstSunday = new Date(year, 0, 1);
-            var n = 6 - (firstSunday.getDay() + 6) % 7;
-            firstSunday.setDate(firstSunday.getDate() + n);
-            //根据年份设置周数
-            weekHtml += '<li><a href="javaScript:void(0)" onclick="week($(this).text())">选择周数</a></li>';
-            for(var i = 1; i <= weekNum; i++) {
-                if(i == 1) {
-                    //计算这年第一个周一的日期
-                    var firstMonday = new Date(firstSunday.setDate(firstSunday.getDate() - 6));
-                    firstSunday.setDate(firstSunday.getDate() + 6);
-                    weekHtml += '<li><a href="javaScript:void(0)" onclick="week($(this).text())">第' + i + '周（' + getNowFormatDate(firstMonday) + '）-（' + getNowFormatDate(firstSunday) + '）</a></li>';
-                } else {
-                    weekHtml += '<li><a href="javaScript:void(0)" onclick="week($(this).text())">第' + i + '周' + getDateRange(firstSunday) + '</a></li>';
-                    //计算出下一个星期日，有个问题是上面调用getDateRange()已经firstSunday加了7天，这里就不需要重新firstSunday加7天
-                    // firstSunday.setDate(firstSunday.getDate() + 7);
-                }
-            }
-        }
-        $('#priceDataWeek').html(weekHtml);
-    }
-    function week(wk){
-        $('.weekText.priceData').text(wk);
-    }
-    function getNumOfWeeks(year) {
-    //设置为这一年开始日期
-    var startDateOfYear = new Date(year, 0, 1);
-    //计算这一年有多少天
-    var daysOfYear = ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) ? 366 : 365;
-    //366（365）/7=52.2(52.1)，所以一般一年有52周余1天或者2天，当这一年有366天时且第一天是周日，那么他的最后一天则是周一，这一年就有54周。
-    var weekNum = 53;
-    //当年份是闰年且第一天是周日时有54周
-    if (startDateOfYear.getDay() == 0 && daysOfYear == 366) {
-        weekNum = 54;
-    }
-    return weekNum;
-    }
-        /**
-     * 根据上周日获取这周日的日期范围
-     * @param lastSunday
-     * @returns
-     */
-    function getDateRange(lastSunday) {
-        if (lastSunday == null || lastSunday == '') {
-            return "";
-        }
-        var beginDate = new Date(lastSunday.setDate(lastSunday.getDate() + 1));
-        var endDate = new Date(lastSunday.setDate(lastSunday.getDate() + 6));
-        return '（' + getNowFormatDate(beginDate) + '）-' + '（' + getNowFormatDate(endDate) + '）';
-    }
-
-    /**
-     * 时间转换成字符串
-     * @param date
-     * @returns
-     */
-    function getNowFormatDate(date) {
-        var Month = 0;
-        var Day = 0;
-        var CurrentStr = "";
-        // 初始化时间
-        Month = date.getMonth() + 1;
-        Day = date.getDate();
-        if (Month >= 10) {
-            CurrentStr += Month + "月";
-        } else {
-            CurrentStr += "0" + Month + "月";
-        }
-        if (Day >= 10) {
-            CurrentStr += Day + "日";
-        } else {
-            CurrentStr += "0" + Day + "日";
-        }
-        return CurrentStr;
-    }
-</script>
-<script src="{{ static_url('js/charts/heat.js') }}"></script>
+ <script src="{{ static_url('js/charts/heat.js') }}"></script>
 
 {% end %}
 

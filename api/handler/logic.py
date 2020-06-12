@@ -8,6 +8,23 @@ import jieba.analyse
 from settings import connect_aiomysql
 
 
+async def get_year_and_week() -> dict:
+    conn = await connect_aiomysql()
+    async with conn.cursor() as cursor:
+        sql_year = """select distinct EXTRACT(YEAR From format_time) as years from qqmessage"""
+        await cursor.execute(sql_year)
+        res = await cursor.fetchall()
+
+        years = [r[0] for r in res]
+
+        sql_week = """select distinct EXTRACT(WEEK From format_time) as weeks from qqmessage"""
+        await cursor.execute(sql_week)
+        res = await cursor.fetchall()
+
+        weeks = [r[0] for r in res]
+    return {"year": years, "week": weeks}
+
+
 def get_all_text(resp: tuple):
     pass
 

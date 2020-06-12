@@ -79,6 +79,9 @@ $(function () {
                     name: '表情',
                     type: 'bar',
                     stack: '总量',
+					barWidth:30,
+					barMaxWidth:30,
+					barGap:5,
                     label: {
                         show: true,
                         position: 'insideRight'
@@ -89,6 +92,9 @@ $(function () {
                     name: '@',
                     type: 'bar',
                     stack: '总量',
+					barWidth:30,
+					barMaxWidth:30,
+					barGap:5,
                     label: {
                         show: true,
                         position: 'insideRight'
@@ -99,6 +105,9 @@ $(function () {
                     name: '图片',
                     type: 'bar',
                     stack: '总量',
+					barWidth:30,
+					barMaxWidth:30,
+					barGap:5,
                     label: {
                         show: true,
                         position: 'insideRight'
@@ -109,6 +118,9 @@ $(function () {
                     name: '语音',
                     type: 'bar',
                     stack: '总量',
+					barWidth:30,
+					barMaxWidth:30,
+					barGap:5,
                     label: {
                         show: true,
                         position: 'insideRight'
@@ -119,6 +131,9 @@ $(function () {
                     name: '文字',
                     type: 'bar',
                     stack: '总量',
+					barWidth:30,
+					barMaxWidth:30,
+					barGap:5,
                     label: {
                         show: true,
                         position: 'insideRight'
@@ -168,6 +183,9 @@ $(function () {
                     name: '发言数量',
                     type: 'bar',
                     data: resp.msg_num,
+					barWidth:30,
+					barMaxWidth:30,
+					barGap:5,
                     label: {
                         show: true, //开启显示
                         position: 'right', //在上方显示

@@ -26,10 +26,28 @@ class LoginHandler(BaseHandler):
 
 class HeatHandler(BaseHandler):
     @authenticated
-    def get(self):
-        group_id = self.get_group_id()
+    async def get(self):
+        group_id = self.group_id
+
+        week_year = self.week_year
+        print(week_year)
+
+        new_data=[]
+        for data in week_year:
+            if data not in new_data:
+                new_data.append(data)
+
+        years = [y[1] for y in new_data]
+
+        start_week = week_year[0][0]
+
+        text_weeks = [(datetime.datetime.strptime('%s-%s-0' % (w[1], w[0]), '%Y-%U-%w'),
+                       datetime.datetime.strptime('%s-%s-6' % (w[1], w[0]), '%Y-%U-%w')) for w in new_data]
+        text_weeks = [f"第{i + start_week}周-{w[0].month}月{w[0].day}号~{w[1].month}月{w[1].day}号" for i, w in
+                      enumerate(text_weeks)]
+        print(text_weeks)
         if group_id:
-            self.render('charts/heat.html', group_id=group_id)
+            await self.render('charts/heat.html', group_id=group_id, years=years, weeks=text_weeks)
         else:
             self.write_error(404)
 
@@ -40,15 +58,14 @@ class HeatHandler(BaseHandler):
         stamp_st = datetime.datetime(startpoint.year, startpoint.month, startpoint.day)
         stamp_end = datetime.datetime(endpoint.year, endpoint.month, endpoint.day)
 
-        group_id = self.get_argument('group_id','187861757')
-        year = self.get_argument('year',"")
-        week = self.get_argument('week',"")
-        print(year,week)
-        if week != "选择周数" and year != "选择年份" and week != "" and year !="":
+        group_id = self.get_argument('group_id', '187861757')
+        year = self.get_argument('year', "")
+        week = self.get_argument('week', "")
+        print(year, week)
+        if week != "选择周数" and year != "选择年份" and week != "" and year != "":
             nums = re.findall('\d+', week)
-            stamp_st = datetime.datetime(int(year[:4]), int(nums[1]), int(nums[2]))
-            stamp_end = datetime.datetime(int(year[:4]), int(nums[3]), int(nums[4]))
-
+            stamp_st = datetime.datetime(int(year), int(nums[1]), int(nums[2]))
+            stamp_end = datetime.datetime(int(year), int(nums[3]), int(nums[4]))
 
         title = f'一周发言热力图{stamp_st}～{stamp_end}'
         data, content_list = await logic.heat_chart_handle(group_id, stamp_st, stamp_end)
@@ -64,7 +81,7 @@ class HeatHandler(BaseHandler):
 class BarHandler(BaseHandler):
     @authenticated
     def get(self):
-        group_id = self.get_group_id()
+        group_id = self.group_id
         if group_id:
             self.render('charts/bar.html', group_id=group_id)
         else:
@@ -92,7 +109,7 @@ class BarHandler(BaseHandler):
 class LineHandler(BaseHandler):
     @authenticated
     def get(self):
-        group_id = self.get_group_id()
+        group_id = self.group_id
         if group_id:
             self.render('charts/line.html', group_id=group_id)
         else:
@@ -114,7 +131,7 @@ class LineHandler(BaseHandler):
 class WordCloudHandler(BaseHandler):
     @authenticated
     def get(self):
-        group_id = self.get_group_id()
+        group_id = self.group_id
         if group_id:
             self.render('charts/wordcloud.html', group_id=group_id)
         else:

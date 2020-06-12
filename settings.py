@@ -30,8 +30,7 @@ def connect_pymysql():
 
 
 async def connect_aiomysql():
-    return await
-    aiomysql.connect(
+    return await aiomysql.connect(
         host=HOST,
         # host="127.0.0.1",
         port=3306,

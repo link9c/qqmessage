@@ -25,7 +25,10 @@ $(function () {
         $.ajax({
             url: "heat",
             data: {
-                'group_id': $('select').val()
+                'group_id': $('#group').val(),
+				'year': $('#year').val(),
+				'week': $('#week').val(),
+				
             },
             method: "post",
             // processData: false,
@@ -129,20 +132,8 @@ $(function () {
                             bottom: '45%'
                         },
                     }
-                },
-                // {
-                //     query: {...},   // 第二个规则。
-                //     option: {       // 第二个规则对应的option。
-                //         legend: {...},
-                //         ...
-                //     }
-                // },
-                // {                   // 这条里没有写规则，表示『默认』，
-                //     option: {       // 即所有规则都不满足时，采纳这个option。
-                //         legend: {...},
-                //         ...
-                //     }
-                // }
+                }
+               
             ]
         };
         myChart.setOption(option);

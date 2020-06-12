@@ -11,12 +11,13 @@ from settings import connect_redis
 class BaseHandler(tornado.web.RequestHandler):
     def initialize(self):
         # self.aiomysql = self.settings['mysql']
+
         self.pymysql = connect_pymysql()
         try:
             self.redis = connect_redis()
         except Exception as e:
             print(e)
-
+        self.__get_info()
 
     def get_current_user(self):
         user_cookie = self.get_secure_cookie("user")
@@ -57,16 +58,17 @@ class BaseHandler(tornado.web.RequestHandler):
         else:
             self.write('error:' + str(status_code))
 
-    def get_group_id(self):
+    def __get_info(self):
         conn = self.pymysql
         cursor = conn.cursor()
-        sql = """select distinct group_id from qqmessage"""
+        sql = """select  * from middle_cal"""
         try:
             cursor.execute(sql)
             conn.close()
             res = cursor.fetchall()
-            group_id = [r[0] for r in res]
-            return group_id
+            self.group_id = list(set([r[0] for r in res]))
+            self.week_year = [[r[1], r[2]] for r in res]
+
         except Exception as e:
             print(e)
             return None
