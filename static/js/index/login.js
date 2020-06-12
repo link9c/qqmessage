@@ -14,7 +14,7 @@ $(function () {
                 if (res.code === 0) {
                    window.location = res.msg;
                 } else {
-                    $('.error-response').html('神秘字符错误！！！');
+                    $('.error-response').html('qq号码错误或未授权！！！');
                 }
             }
         })

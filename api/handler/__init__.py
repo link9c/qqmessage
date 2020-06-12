@@ -14,10 +14,11 @@ class LoginHandler(BaseHandler):
     def get(self):
         self.render('index.html')
 
-    def post(self):
+    async def post(self):
         data = {'code': None, 'msg': None}
         secretNum = self.get_argument('secretNum')
-        if secretNum == '10086':
+        res = await logic.auth_check(secretNum)
+        if res:
             self.set_secure_cookie('user', secretNum)
             data['code'] = 0
             data['msg'] = 'charts/heat'
@@ -30,9 +31,8 @@ class HeatHandler(BaseHandler):
         group_id = self.group_id
 
         week_year = self.week_year
-        print(week_year)
 
-        new_data=[]
+        new_data = []
         for data in week_year:
             if data not in new_data:
                 new_data.append(data)
