@@ -4,6 +4,8 @@ import aiomysql
 import pymysql
 import redis
 
+from secret import *
+
 Base_Dir = os.path.dirname(__file__)
 APP_CONFIG = dict(
     static_path=os.path.join(Base_Dir, 'static'),
@@ -18,48 +20,33 @@ APP_CONFIG = dict(
 
 def connect_pymysql():
     return pymysql.connect(
-        host="118.xxx.209",
+        host=HOST,
         # host="127.0.0.1",
         port=3306,
-        user="link",
-        password="xxx",
+        user=USER,
+        password=MYSQLPASS,
         db="coolq"
     )
 
 
-async def test_aiomysql(sql):
-    conn = await aiomysql.connect(host="118.xxx.209",
-                                  # host="127.0.0.1",
-                                  port=3306,
-                                  user="link",
-                                  password="xxx",
-                                  db="coolq")
-
-    async with conn.cursor() as cur:
-        await cur.execute(sql)
-        print(cur.description)
-        r = await cur.fetchall()
-    conn.close()
-    return r
-
-
 async def connect_aiomysql():
-    return await aiomysql.connect(
-        host="118.xxx.209",
+    return await
+    aiomysql.connect(
+        host=HOST,
         # host="127.0.0.1",
         port=3306,
-        user="link",
-        password="xxx",
+        user=USER,
+        password=MYSQLPASS,
         db="coolq"
     )
 
 
 def connect_redis():
     return redis.StrictRedis(
-        host='118.xxx.209',
+        host=HOST,
         port=6379,
         db=0,
-        password=xxx)
+        password=REDISPASS)
 
 
 if __name__ == '__main__':
