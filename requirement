@@ -2,3 +2,4 @@ aiomysql
 jieba
 PyMySQL
 tornado
+redis
