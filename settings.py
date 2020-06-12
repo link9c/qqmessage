@@ -18,21 +18,21 @@ APP_CONFIG = dict(
 
 def connect_pymysql():
     return pymysql.connect(
-        host="118.25.135.209",
+        host="118.xxx.209",
         # host="127.0.0.1",
         port=3306,
         user="link",
-        password="12345",
+        password="xxx",
         db="coolq"
     )
 
 
 async def test_aiomysql(sql):
-    conn = await aiomysql.connect(host="118.25.135.209",
+    conn = await aiomysql.connect(host="118.xxx.209",
                                   # host="127.0.0.1",
                                   port=3306,
                                   user="link",
-                                  password="12345",
+                                  password="xxx",
                                   db="coolq")
 
     async with conn.cursor() as cur:
@@ -45,21 +45,21 @@ async def test_aiomysql(sql):
 
 async def connect_aiomysql():
     return await aiomysql.connect(
-        host="118.25.135.209",
+        host="118.xxx.209",
         # host="127.0.0.1",
         port=3306,
         user="link",
-        password="12345",
+        password="xxx",
         db="coolq"
     )
 
 
 def connect_redis():
     return redis.StrictRedis(
-        host='118.25.135.209',
+        host='118.xxx.209',
         port=6379,
         db=0,
-        password=123456)
+        password=xxx)
 
 
 if __name__ == '__main__':
