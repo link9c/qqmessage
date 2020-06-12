@@ -37,7 +37,7 @@ class HeatHandler(BaseHandler):
             if data not in new_data:
                 new_data.append(data)
 
-        years = [y[1] for y in new_data]
+        years = list(set([y[1] for y in new_data]))
 
         start_week = week_year[0][0]
 
