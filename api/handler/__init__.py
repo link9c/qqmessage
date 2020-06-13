@@ -160,15 +160,7 @@ class WeChatCheck(BaseHandler):
         json_data = self.request.body
         print(json_data)
 
-        resp = """
-        <xml>
-  <ToUserName><![CDATA[oy5vOwp8LdIVwrFKImdkWnCDu3v8]]></ToUserName>
-  <FromUserName><![CDATA[gh_1dc5dc067a98]]></FromUserName>
-  <CreateTime>1584543275</CreateTime>
-  <MsgType><![CDATA[text]]></MsgType>
-  <Content><![CDATA[你好]]></Content>
-</xml>
-        """
+        resp = """        """
         self.write(resp)
 
 
